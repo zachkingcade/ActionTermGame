@@ -1,9 +1,23 @@
 #include<string>
+#include<iostream>
 
 class Block{
-protected:
-    virtual void update() = 0;
-    virtual std::string draw() = 0;
+public:
+    Block(int X = 0, int Y = 0,std::string symbol = " ",unsigned short colorBG= 0, unsigned short colorS= 0){
+        this->X = X;
+        this->Y = Y;
+        this->symbol = symbol;
+        this->colorBG = colorBG;
+        this->colorS = colorS;
+    }
+    virtual void update(){};
+    virtual std::string draw(){
+        std::string image = "";
+        image += '&';
+        image += std::to_string(colorS) += std::to_string(colorBG);
+        image += symbol;
+        return image;
+    };
 
     //coordinates
     int X;
@@ -11,7 +25,7 @@ protected:
     //unicode character to represent this block
     std::string symbol;
     //background color to color this block
-    std::string colorBG;
+    unsigned short colorBG;
     //Color to color the character its self
-    std::string colorS;
+    unsigned short colorS;
 };
