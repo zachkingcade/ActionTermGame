@@ -1,8 +1,6 @@
 #include"Actor.h"
 
 class Player : public Actor{
-protected:
-
-
+public:
     int score;
 };
