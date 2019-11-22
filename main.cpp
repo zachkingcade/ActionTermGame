@@ -1,8 +1,8 @@
 #include<vector>
-#include"Block.h"
-#include"Actor.h"
 #include<iostream>
 #include "TermGame.h"
+#include"Block.h"
+#include"Enemy.h"
 
 using std::vector;
 
@@ -32,71 +32,37 @@ int main(){
             }
         }
     }
-    // for (int x = 0; x < 50; x++){
-    //     for(int y = 0; y < 50; y++){
-    //         TermPrint::print(stage[x][y]->draw());
-    //     }
-    //     std::cout << std::endl;
-    // }
-
-    //create a temporary test actor layer
         std::vector <std::vector <Block*>>FGLayer{10};
         for (int x = 0; x < 10; x++){
             for(int y = 0; y < 10; y++){
                 FGLayer[x].push_back(nullptr);
             }
         }
-        FGLayer[5][5] = new Actor(25,25,"\u263A",2,8);
+        FGLayer[5][5] = new Enemy(5,5,"\u263A",2,8,10);
 
     //-------------------------testing---------------------------------
-    int PX = 5;
-    int PY = 5;
     while(true){
-        TermGame::sleep(35);
+        TermGame::sleep(1000);
         TermPrint::clear();
         for (int x = 0; x < 10; x++){
             for(int y = 0; y < 10; y++){
                 if (FGLayer[x][y] == nullptr){
-                    std::cout << "\\";
+                    TermPrint::print(BGLayer[x][y]->draw());
                 } else {
                     TermPrint::print(FGLayer[x][y]->draw());
                 }
             }
             std::cout << '\n';
         }
-        char key;
-        Block *aHolder;
-        switch(TermGame::getch()){
-            case 'w':
-            aHolder = FGLayer[PX][PY];
-            FGLayer[PX][PY] = nullptr;
-            FGLayer[PX-1][PY] = aHolder;
-            PX--;
-            break;
-
-            case 's':
-            aHolder = FGLayer[PX][PY];
-            FGLayer[PX][PY] = nullptr;
-            FGLayer[PX+1][PY] = aHolder;
-            PX++;
-            break;
-
-            case 'a':
-            aHolder = FGLayer[PX][PY];
-            FGLayer[PX][PY] = nullptr;
-            FGLayer[PX][PY-1] = aHolder;
-            PY--;
-            break;
-
-            case 'd':
-            aHolder = FGLayer[PX][PY];
-            FGLayer[PX][PY] = nullptr;
-            FGLayer[PX][PY+1] = aHolder;
-            PY++;
-            break;
+        for (int x = 0; x < 10; x++){
+            for(int y = 0; y < 10; y++){
+                if (FGLayer[x][y] != nullptr){
+                    Block* holder = FGLayer[x][y];
+                    FGLayer[x][y] = nullptr;
+                    holder->move();
+                    FGLayer[holder->X][holder->Y] = holder;
+                }
+            }
         }
     }
-    
-
-    
 }
